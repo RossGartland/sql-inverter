@@ -46,7 +46,7 @@ jobs:
           tag=latest
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} <<EOF
             sudo service docker start
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }}N | docker login --username AWS --password-stdin $image_uri
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $image_uri
             docker pull $image_uri
             docker stop flask-container || true
             docker rm flask-container || true
