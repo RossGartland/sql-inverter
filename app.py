@@ -31,4 +31,4 @@ def process_sql():
     return render_template('index.html', sql_input=sql_script, sql_output=output_script, conversion_type=conversion_type)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
