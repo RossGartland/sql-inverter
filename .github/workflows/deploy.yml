@@ -28,8 +28,7 @@ jobs:
 
       - name: Deploy Docker container to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@$EC2_PUBLIC_IP <<EOF
-            docker pull flask-app
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} <<EOF
             docker stop flask-container || true
             docker rm flask-container || true
             docker run -d -p 5000:5000 --name flask-container flask-app
