@@ -35,18 +35,20 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           image_uri=${{ secrets.ECR_REPOSITORY }}
+          tag=latest
 
-          docker build -t $image_uri .
-          docker push $image_uri
+          docker build -t $image_uri:$tag .
+          docker push $image_uri:$tag
 
       - name: Deploy Docker container to EC2
         run: |
           image_uri=${{ secrets.ECR_REPOSITORY }}
+          tag=latest
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} <<EOF
             sudo service docker start
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }}N | docker login --username AWS --password-stdin $image_uri
             docker pull $image_uri
             docker stop flask-container || true
             docker rm flask-container || true
-            docker run -d -p 5000:5000 --name flask-container flask-app
+            docker run -d -p 5000:5000 --name flask-container $image_uri:$tag
           EOF
