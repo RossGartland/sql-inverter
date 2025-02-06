@@ -8,7 +8,6 @@ def insert_processor(sql_script):
     """
     Processes a SQL script, converting DELETE statements to INSERT statements.
     """
-    print('Start line 10', flush=True)
     # Parse the input SQL script into individual statements
     parsed_statements = sqlparse.parse(sql_script)
     output_statements = []
@@ -19,12 +18,9 @@ def insert_processor(sql_script):
 
         # Process comments to replace 'DELETE' with 'INSERT'
         original_statement = modify_comments_for_inserts(original_statement)
-        print("20")
         # Process DELETE statements
         if original_statement.upper().startswith("DELETE"):
-            print("here")
             try:
-                print("here 2")
                 insert_statement = generate_insert(statement)
                 output_statements.append(insert_statement)
             except ValueError as e:
